@@ -29,7 +29,8 @@
             appear          : null,
             load            : null
         };
-        
+        // adding fix for the global container variable leakage.
+        // this prevented multiple instances from working properly
         var $container;
         
         function update() {
