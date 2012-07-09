@@ -29,7 +29,9 @@
             appear          : null,
             load            : null
         };
-
+        
+        var $container;
+        
         function update() {
             var counter = 0;
       
@@ -38,11 +40,11 @@
                 if (settings.skip_invisible && !$this.is(":visible")) {
                     return;
                 }
-                if ($.abovethetop(this, settings) ||
-                    $.leftofbegin(this, settings)) {
+                if ($.abovethetop(this, $container, settings) ||
+                    $.leftofbegin(this, $container, settings)) {
                         /* Nothing. */
-                } else if (!$.belowthefold(this, settings) &&
-                    !$.rightoffold(this, settings)) {
+                } else if (!$.belowthefold(this, $container, settings) &&
+                    !$.rightoffold(this, $container, settings)) {
                         $this.trigger("appear");
                 } else {
                     if (++counter > settings.failure_limit) {
@@ -139,7 +141,7 @@
     /* Convenience methods in jQuery namespace.           */
     /* Use as  $.belowthefold(element, {threshold : 100, container : window}) */
 
-    $.belowthefold = function(element, settings) {
+    $.belowthefold = function(element, $container, settings) {
         var fold;
         
         if (settings.container === undefined || settings.container === window) {
@@ -151,7 +153,7 @@
         return fold <= $(element).offset().top - settings.threshold;
     };
     
-    $.rightoffold = function(element, settings) {
+    $.rightoffold = function(element, $container, settings) {
         var fold;
 
         if (settings.container === undefined || settings.container === window) {
@@ -163,7 +165,7 @@
         return fold <= $(element).offset().left - settings.threshold;
     };
         
-    $.abovethetop = function(element, settings) {
+    $.abovethetop = function(element, $container, settings) {
         var fold;
         
         if (settings.container === undefined || settings.container === window) {
@@ -175,7 +177,7 @@
         return fold >= $(element).offset().top + settings.threshold  + $(element).height();
     };
     
-    $.leftofbegin = function(element, settings) {
+    $.leftofbegin = function(element, $container, settings) {
         var fold;
         
         if (settings.container === undefined || settings.container === window) {
@@ -187,7 +189,7 @@
         return fold >= $(element).offset().left + settings.threshold + $(element).width();
     };
 
-    $.inviewport = function(element, settings) {
+    $.inviewport = function(element, $container, settings) {
          return !$.rightofscreen(element, settings) && !$.leftofscreen(element, settings) && 
                 !$.belowthefold(element, settings) && !$.abovethetop(element, settings);
      };
